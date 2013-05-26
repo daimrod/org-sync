@@ -31,6 +31,7 @@
 
 (eval-when-compile (require 'cl))
 (require 'os)
+(require 'os-util)
 (require 'json)
 (require 'url)
 
@@ -123,13 +124,7 @@
          buf)
 
     (message "%s %s %s" method url (prin1-to-string data))
-    (setq buf (url-retrieve-synchronously url))
-    (with-current-buffer buf
-      (goto-char url-http-end-of-headers)
-      (message "%s" (buffer-substring (point) (point-max)))
-      (prog1
-          (cons url-http-response-status (ignore-errors (json-read)))
-        (kill-buffer)))))
+    (org-sync-util-read-json-from-url url)))
 
 (defun org-sync-rtm-auth ()
   "Return the URL to grant access to the user account."

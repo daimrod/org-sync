@@ -71,11 +71,7 @@ decoded response in JSON."
           (setq buf (url-retrieve-synchronously url)))
       ;; nothing more to bind
       (setq buf (url-retrieve-synchronously url)))
-    (with-current-buffer buf
-      (goto-char url-http-end-of-headers)
-      (prog1 
-          (cons url-http-response-status (ignore-errors (json-read)))
-        (kill-buffer)))))
+    (org-sync-util-read-json-from-response-buffer buf)))
 
 ;; override
 (defun org-sync-bb-base-url (url)
